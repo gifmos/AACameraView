@@ -50,7 +50,7 @@ import AVFoundation
     open var response: ((_ response: Any?) -> ())?
     
     /// Preview layrer for AACameraView
-    var previewLayer: AVCaptureVideoPreviewLayer?
+    public var previewLayer: AVCaptureVideoPreviewLayer?
     
     /// Zoom factor for AACameraView
     var zoomFactor: CGFloat = 1
