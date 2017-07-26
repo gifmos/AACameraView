@@ -155,7 +155,7 @@ import AVFoundation
         label.font = UIFont(name: "Gill Sans", size: bounds.width/10)
         label.sizeThatFits(intrinsicContentSize)
         self.addSubview(label)
-        self.backgroundColor = UIColor(rgb: 0x2891B1)
+//        self.backgroundColor = UIColor(rgb: 0x2891B1)
         
     }
     
