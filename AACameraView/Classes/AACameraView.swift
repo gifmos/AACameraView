@@ -127,6 +127,15 @@ import AVFoundation
         }
     }
     
+    open var torchMode: AVCaptureTorchMode = .auto {
+        didSet {
+            guard torchMode != oldValue else {
+                return
+            }
+            setTorch()
+        }
+    }
+    
     /// Current camera quality for AACameraView
     open var quality: OUTPUT_QUALITY = .high {
         didSet {
@@ -288,7 +297,7 @@ extension AACameraView {
             return
         }
         
-        global.queue.async(execute: {
+//        global.queue.async(execute: {
             session.beginConfiguration()
             session.sessionPreset = AVCaptureSessionPresetHigh
             
@@ -303,7 +312,7 @@ extension AACameraView {
             
             session.startRunning()
             
-        })
+//        })
     }
     
     /// Set Output mode for AACameraView
@@ -334,6 +343,10 @@ extension AACameraView {
     /// Set Flash mode for AACameraView
     func setFlash() {
         session.setFlashMode(global.devicesVideo, flashMode: flashMode)
+    }
+    
+    func setTorch() {
+        session.setTorchMode(global.devicesVideo, torchMode: torchMode)
     }
     
     /// Set Zoom in/out gesture for AACameraView

@@ -9,20 +9,20 @@
 import AVFoundation
 
 // MARK: - UIColor extenison
-extension UIColor {
-    
-    /// hex value for color
-    ///
-    /// - Parameter rgb: hex value
-    convenience init(rgb: UInt) {
-        self.init(
-            red: CGFloat((rgb & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgb & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgb & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
-    }
-}
+//extension UIColor {
+//    
+//    /// hex value for color
+//    ///
+//    /// - Parameter rgb: hex value
+//    convenience init(rgb: UInt) {
+//        self.init(
+//            red: CGFloat((rgb & 0xFF0000) >> 16) / 255.0,
+//            green: CGFloat((rgb & 0x00FF00) >> 8) / 255.0,
+//            blue: CGFloat(rgb & 0x0000FF) / 255.0,
+//            alpha: CGFloat(1.0)
+//        )
+//    }
+//}
 
 // MARK: - AVCaptureSession extension
 extension AVCaptureSession {
@@ -87,6 +87,24 @@ extension AVCaptureSession {
         self.commitConfiguration()
     }
     
+    func setTorchMode(_ devices: [AVCaptureDevice], torchMode: AVCaptureTorchMode) {
+        self.beginConfiguration()
+        devices.forEach { (device) in
+            if (device.position == .back) {
+                if (device.isTorchModeSupported(torchMode)) {
+                    do {
+                        try device.lockForConfiguration()
+                    } catch {
+                        return
+                    }
+                    device.torchMode = torchMode
+                    device.unlockForConfiguration()
+                }
+            }
+        }
+        self.commitConfiguration()
+    }
+    
     /// Set camera device to current capture session
     ///
     /// - Parameters:
@@ -139,7 +157,7 @@ extension AVCaptureSession {
         }
         layer.videoGravity = AVLayerVideoGravityResizeAspectFill
         DispatchQueue.main.async(execute: { () -> Void in
-            layer.frame = cameraView.layer.bounds
+            layer.frame = UIScreen.main.bounds//cameraView.layer.bounds
             cameraView.clipsToBounds = true
             cameraView.layer.addSublayer(layer)
         })
